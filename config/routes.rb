@@ -3,4 +3,6 @@ Rails.application.routes.draw do
   resources :schedules do
     resources :tasks
   end
+  post 'auth/login', to: 'authentication#authenticate'
+  post 'signup', to: 'users#create'
 end

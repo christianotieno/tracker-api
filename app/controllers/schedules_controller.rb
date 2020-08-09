@@ -3,13 +3,15 @@ class SchedulesController < ApplicationController
 
   # GET /schedules
   def index
-    @schedules = Schedule.all
+      # get current user schedules
+    @schedules = current_user.schedules
     json_response(@schedules)
   end
 
   # POST /schedules
   def create
-    @schedule = Schedule.create!(schedule_params)
+      # create todos belonging to current user
+    @schedule = current_user.schedules.create!(schedule_params)
     json_response(@schedule, :created)
   end
 
@@ -34,7 +36,7 @@ class SchedulesController < ApplicationController
 
   def schedule_params
     # whitelist params
-    params.permit(:title, :created_by)
+    params.permit(:title)
   end
 
   def set_schedule
