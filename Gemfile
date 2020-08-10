@@ -25,6 +25,7 @@ gem 'bcrypt', '~> 3.1', '>= 3.1.15'
 gem 'jwt', '~> 2.2', '>= 2.2.1'
 gem 'active_model_serializers', '~> 0.10.10'
 gem 'will_paginate', '~> 3.3'
+
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.2', require: false
 
