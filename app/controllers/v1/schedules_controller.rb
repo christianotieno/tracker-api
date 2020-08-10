@@ -5,7 +5,7 @@ module V1
     # GET /schedules
     def index
         # get current user schedules
-      @schedules = current_user.schedules
+      @schedules = current_user.schedules.paginate(page: params[:page], per_page: 20)
       json_response(@schedules)
     end
 
