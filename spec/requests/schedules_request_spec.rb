@@ -7,7 +7,7 @@ RSpec.describe 'Schedules API', type: :request do
   let(:schedule_id) { schedules.first.id }
 
   # authorize request
-  let(:headers) { validate_headers }
+  let(:headers) { valid_headers }
   describe 'GET /schedules' do
     # update request with headers
     before { get '/schedules', params: {}, headers: headers }

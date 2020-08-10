@@ -1,15 +1,15 @@
 require 'rails_helper'
 
 RSpec.describe 'Tasks API', type: :request do
-  # Initialize the test data
-  let!(:schedule) { create(:schedule) }
+  let(:user) { create(:user) }
+  let!(:schedule) { create(:schedule, created_by: user.id) }
   let!(:tasks) { create_list(:task, 20, schedule_id: schedule.id) }
   let(:schedule_id) { schedule.id }
   let(:id) { tasks.first.id }
+  let(:headers) { valid_headers }
 
-  # Test suite for GET /schedules/:schedule_id/tasks
   describe 'GET /schedules/:schedule_id/tasks' do
-    before { get "/schedules/#{schedule_id}/tasks" }
+    before { get "/schedules/#{schedule_id}/tasks", params: {}, headers: headers }
 
     context 'when schedule exists' do
       it 'returns status code 200' do
@@ -34,9 +34,8 @@ RSpec.describe 'Tasks API', type: :request do
     end
   end
 
-  # Test suite for GET /schedules/:schedule_id/tasks/:id
   describe 'GET /schedules/:schedule_id/tasks/:id' do
-    before { get "/schedules/#{schedule_id}/tasks/#{id}" }
+    before { get "/schedules/#{schedule_id}/tasks/#{id}", params: {}, headers: headers }
 
     context 'when schedule task exists' do
       it 'returns status code 200' do
@@ -63,10 +62,12 @@ RSpec.describe 'Tasks API', type: :request do
 
   # Test suite for POST /schedules/:schedule_id/tasks
   describe 'POST /schedules/:schedule_id/tasks' do
-    let(:valid_attributes) { { name: 'Read 2 chapters of a book', done: false } }
+    let(:valid_attributes) { { name: 'Read 2 chapters of a book', done: false }.to_json }
 
     context 'when request attributes are valid' do
-      before { post "/schedules/#{schedule_id}/tasks", params: valid_attributes }
+      before do
+        post "/schedules/#{schedule_id}/tasks", params: valid_attributes, headers: headers
+      end
 
       it 'returns status code 201' do
         expect(response).to have_http_status(201)
@@ -74,7 +75,7 @@ RSpec.describe 'Tasks API', type: :request do
     end
 
     context 'when an invalid request' do
-      before { post "/schedules/#{schedule_id}/tasks", params: {} }
+      before { post "/schedules/#{schedule_id}/tasks", params: {}, headers: headers }
 
       it 'returns status code 422' do
         expect(response).to have_http_status(422)
@@ -86,11 +87,12 @@ RSpec.describe 'Tasks API', type: :request do
     end
   end
 
-  # Test suite for PUT /schedules/:schedule_id/tasks/:id
   describe 'PUT /schedules/:schedule_id/tasks/:id' do
-    let(:valid_attributes) { { name: 'Do a 2km run' } }
+    let(:valid_attributes) { { name: 'Do a 2km run' }.to_json }
 
-    before { put "/schedules/#{schedule_id}/tasks/#{id}", params: valid_attributes }
+    before do
+      put "/schedules/#{schedule_id}/tasks/#{id}", params: valid_attributes, headers: headers
+    end
 
     context 'when task exists' do
       it 'returns status code 204' do
@@ -118,7 +120,7 @@ RSpec.describe 'Tasks API', type: :request do
 
   # Test suite for DELETE /schedules/:id
   describe 'DELETE /schedules/:id' do
-    before { delete "/schedules/#{schedule_id}/tasks/#{id}" }
+    before { delete "/schedules/#{schedule_id}/tasks/#{id}", headers: headers }
 
     it 'returns status code 204' do
       expect(response).to have_http_status(204)
