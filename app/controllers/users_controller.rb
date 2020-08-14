@@ -1,24 +1,73 @@
 class UsersController < ApplicationController
+  def index
+    @users = User.all
+    if @users
+      render json: {
+        users: @users
+      }
+    else
+      render json: {
+        status: 500,
+        errors: ['Users not found']
+      }
+    end
+  end
 
-  skip_before_action :authorize_request, only: :create
+  def show
+    @user = User.find(params[:id])
+    if @user
+      render json: {
+        user: @user
+      }
+    else
+      render json: {
+        status: 500,
+        errors: ['User not found']
+      }
+    end
+  end
 
-  # POST /signup
-  # return authenticated token upon signup
   def create
-    user = User.create!(user_params)
-    auth_token = AuthenticateUser.new(user.email, user.password).call
-    response = { message: Message.account_created, auth_token: auth_token }
-    json_response(response, :created)
+    @user = User.new(user_params)
+    if @user.save
+      login!
+      render json: {
+        status: :created,
+        user: @user
+      }
+    else
+      render json: {
+        status: 500,
+        errors: @user.errors.full_messages
+      }
+    end
+  end
+
+  def update
+    @user = User.find(params[:id])
+    if @user
+      @user.update(user_params)
+      render json: { message: 'Profile succesfully updated' }, status: 200
+    else
+
+      render json: { error: 'Unable to update Profile' }, status: 400
+    end
+  end
+
+  def destroy
+    @user = User.find(params[:id])
+    if @user
+      @user.destroy
+      render json: { message: 'Profile succesfully deleted' }, status: 200
+    else
+
+      render json: { error: 'Unable to delete Profile' }, status: 400
+    end
   end
 
   private
 
   def user_params
-    params.permit(
-      :name,
-      :email,
-      :password,
-      :password_confirmation
-    )
+    params.require(:user).permit(:email, :password, :password_confirmation)
   end
 end

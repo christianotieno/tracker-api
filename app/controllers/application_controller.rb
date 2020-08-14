@@ -1,15 +1,28 @@
-class ApplicationController < ActionController::API
+class ApplicationController < ActionController::Base
+  include ActionController::Helpers
+  include ::ActionController::Cookies
   include Response
   include ExceptionHandler
 
-  # called before every action on controllers
-  before_action :authorize_request
-  attr_reader :current_user
+  skip_before_action :verify_authenticity_token
+  helper_method :login!, :logged_in?, :current_user, :authorized_user?, :logout!
+  def login!
+    session[:user_id] = @user.id
+  end
 
-  private
+  def logged_in?
+    !session[:user_id].nil?
+  end
 
-  # Check for valid request token and return user
-  def authorize_request
-    @current_user = (AuthorizeApiRequest.new(request.headers).call)[:user]
+  def current_user
+    @current_user ||= User.find(session[:user_id]) if session[:user_id]
+  end
+
+  def authorized_user?
+    @user == current_user
+  end
+
+  def logout!
+    session.clear
   end
 end

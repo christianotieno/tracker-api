@@ -1,7 +1,5 @@
 class Task < ApplicationRecord
-  # model association
   belongs_to :schedule
-
-  # validation
+  validates :date, presence: true
   validates_presence_of :name
 end

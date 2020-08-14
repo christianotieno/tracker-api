@@ -1,9 +1,11 @@
 class CreateTasks < ActiveRecord::Migration[6.0]
   def change
     create_table :tasks do |t|
+      t.references :schedule, null: false, foreign_key: true
       t.string :name
       t.boolean :done
-      t.references :schedule, null: false, foreign_key: true
+      t.datetime :date
+      t.string :notes
 
       t.timestamps
     end

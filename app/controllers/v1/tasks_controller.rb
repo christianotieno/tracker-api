@@ -1,48 +1,56 @@
 module V1
   class TasksController < ApplicationController
-    before_action :set_schedule
-    before_action :set_schedule_task, only: %i[show update destroy]
+    before_action :find_schedule
+    before_action :find_task, only: %i[show update destroy]
 
-    # GET /todos/:schedule_id/tasks
-    def index
-      json_response(@schedule.tasks)
+  def index
+    render json: @schedule.tasks
+  end
+
+  def show
+    render json: @task
+  end
+
+  def create
+    @task = Task.new(task_params)
+
+    if @task.save
+      render json: @task
+    else
+
+      render json: { error: 'Unable to create Date' }, status: 400
     end
+  end
 
-    # GET /schedules/:schedule_id/tasks/:id
-    def show
-      json_response(@task)
-    end
-
-    # POST /todos/:todo_id/items
-    def create
-      @schedule.tasks.create!(task_params)
-      json_response(@schedule, :created)
-    end
-
-    # PUT /schedules/:schedule_id/tasks/:id
-    def update
+  def update
+    if @task
       @task.update(task_params)
-      head :no_content
+      render json: { message: 'Date succesfully updated' }, status: 200
+    else
+      render json: { error: 'Unable to update Date' }, status: 400
     end
+  end
 
-    # DELETE /schedules/:schedule_id/tasks/:id
-    def destroy
+  def destroy
+    if @task
       @task.destroy
-      head :no_content
+      render json: { message: 'Date succesfully deleted' }, status: 200
+    else
+      render json: { error: 'Unable to delete Date' }, status: 400
     end
+  end
 
-    private
+  private
 
-    def task_params
-      params.permit(:name, :done)
-    end
+  def task_params
+    params.require(:tracking).permit(:id, :date, :done, :schedule_id, notes: [])
+  end
 
-    def set_schedule
-      @schedule = Schedule.find(params[:schedule_id])
-    end
+  def find_task
+    @task = Task.find(params[:id])
+  end
 
-    def set_schedule_task
-      @task = @schedule.tasks.find_by!(id: params[:id]) if @schedule
-    end
+  def find_schedule
+    @schedule = Schedule.find(params[:schedule_id])
   end
 end

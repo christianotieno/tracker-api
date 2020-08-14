@@ -46,7 +46,7 @@ class Message
   def self.task_deleted
     'Task removed from your schedule successfully.'
   end
-  
+
   def self.task_completed
     'Congratulations! You have successfully completed this task.'
   end
