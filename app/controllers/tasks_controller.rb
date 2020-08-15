@@ -1,7 +1,6 @@
-
-  class TasksController < ApplicationController
-    before_action :find_schedule
-    before_action :find_task, only: %i[show update destroy]
+class TasksController < ApplicationController
+  before_action :find_schedule
+  before_action :find_task, only: %i[show update destroy]
 
   def index
     render json: @schedule.tasks
@@ -43,7 +42,7 @@
   private
 
   def task_params
-    params.require(:tracking).permit(:id, :date, :done, :schedule_id, notes: [])
+    params.require(:task).permit(:id, :date, :done, :schedule_id, notes: [])
   end
 
   def find_task
@@ -53,3 +52,4 @@
   def find_schedule
     @schedule = Schedule.find(params[:schedule_id])
   end
+end
