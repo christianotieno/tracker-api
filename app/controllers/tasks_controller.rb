@@ -1,4 +1,4 @@
-module V1
+
   class TasksController < ApplicationController
     before_action :find_schedule
     before_action :find_task, only: %i[show update destroy]
@@ -53,4 +53,3 @@ module V1
   def find_schedule
     @schedule = Schedule.find(params[:schedule_id])
   end
-end

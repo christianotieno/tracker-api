@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
-  scope module: :v1, constraints: ApiVersion.new('v1', true) do
     root 'static_page#home'
     post '/login', to: 'sessions#create'
     delete '/logout', to: 'sessions#destroy'
@@ -10,5 +9,4 @@ Rails.application.routes.draw do
         resources :tasks
       end
     end
-  end
 end

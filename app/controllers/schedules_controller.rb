@@ -1,7 +1,6 @@
-module V1
-  class SchedulesController < ApplicationController
-    before_action :find_user
-    before_action :find_schedule, only: %i[show update destroy]
+class SchedulesController < ApplicationController
+  before_action :find_user
+  before_action :find_schedule, only: %i[show update destroy]
 
   def index
     render json: @user.schedules
