@@ -63,7 +63,7 @@ RSpec.describe "Tasks API", type: :request do
 
   # Test suite for POST tasks
   describe 'POST /users/:user_id/schedules/:schedule_id/tasks' do
-    let(:valid_attributes) { { task: {date: '2019-10-15', done: true, schedule_id: schedule_id } } }
+    let(:valid_attributes) { { task: { date: '2019-10-15', done: true, schedule_id: schedule_id } } }
 
     context 'when request attributes are valid' do
       before { post "/users/#{user_id}/schedules/#{schedule_id}/tasks", params: valid_attributes }
