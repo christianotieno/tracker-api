@@ -63,13 +63,13 @@ RSpec.describe "Tasks API", type: :request do
 
   # Test suite for POST tasks
   describe 'POST /users/:user_id/schedules/:schedule_id/tasks' do
-    let(:valid_attributes) { { task: { date: '2019-10-15', done: true, schedule_id: schedule_id } } }
+    let(:valid_attributes) { { task: { name: 'New Task', date: '2019-09-15', schedule_id: schedule_id } } }
 
     context 'when request attributes are valid' do
       before { post "/users/#{user_id}/schedules/#{schedule_id}/tasks", params: valid_attributes }
 
       it 'returns status code 200' do
-        expect(response).to have_http_status(400)
+        expect(response).to have_http_status(200)
       end
     end
 
@@ -81,7 +81,7 @@ RSpec.describe "Tasks API", type: :request do
       end
 
       it 'returns a unable to create schedule message' do
-        expect(response.body).to match(/Unable to create Date/)
+        expect(response.body).to match(/Unable to create Task/)
       end
     end
   end

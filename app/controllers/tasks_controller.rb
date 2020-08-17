@@ -17,32 +17,32 @@ class TasksController < ApplicationController
       render json: @task
     else
 
-      render json: { error: 'Unable to create Date' }, status: 400
+      render json: { error: 'Unable to create Task' }, status: 400
     end
   end
 
   def update
     if @task
       @task.update(task_params)
-      render json: { message: 'Date succesfully updated' }, status: 200
+      render json: { message: 'Task succesfully updated' }, status: 200
     else
-      render json: { error: 'Unable to update Date' }, status: 400
+      render json: { error: 'Unable to update Task' }, status: 400
     end
   end
 
   def destroy
     if @task
       @task.destroy
-      render json: { message: 'Date succesfully deleted' }, status: 200
+      render json: { message: 'Task succesfully deleted' }, status: 200
     else
-      render json: { error: 'Unable to delete Date' }, status: 400
+      render json: { error: 'Unable to delete Task' }, status: 400
     end
   end
 
   private
 
   def task_params
-    params.require(:task).permit(:id, :date, :done, :schedule_id, notes: [])
+    params.require(:task).permit(:id, :date, :done, :schedule_id, :notes)
   end
 
   def find_task
