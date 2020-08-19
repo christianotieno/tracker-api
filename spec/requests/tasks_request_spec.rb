@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Tasks API", type: :request do
+RSpec.describe 'Tasks API', type: :request do
   # Initialize the test data
   let!(:user) { create(:user) }
   let!(:schedule) { create(:schedule) }
