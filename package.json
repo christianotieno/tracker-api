@@ -1,0 +1,14 @@
+{
+  "name": "tracker-api",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:christianotieno/tracker-api.git",
+  "author": "christianotieno <oduorchristian@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "stylelint": "13.3.x",
+    "stylelint-config-standard": "20.0.x",
+    "stylelint-csstree-validator": "^1.8.0",
+    "stylelint-scss": "3.17.x"
+  }
+}
